@@ -18,6 +18,15 @@ const insertQueue = (req,res) => {
     });
 };
 
+const updateQueue = (req,res) => {
+    const { type, wait } = req.body
+    pool.query(queries.updateQueue, [type, wait], (error, results) => {
+        if(error)
+            throw error;
+        res.status(201).send('Queue updated');
+    });
+};
+
 const deleteQueue = (req,res) => {
     pool.query(queries.deleteQueue, (error, results) => {
         if(error)
@@ -29,5 +38,6 @@ const deleteQueue = (req,res) => {
 module.exports ={
     getQueue,
     insertQueue,
+    updateQueue,
     deleteQueue
 };

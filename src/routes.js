@@ -11,6 +11,7 @@ router.get('/',(req,res)=>{
 
 router.get('/getQueue', controller.getQueue);
 router.post('/insertQueue', controller.insertQueue);
+router.put('/updateQueue', controller.updateQueue);
 router.delete('/deleteQueue', controller.deleteQueue);
 
 module.exports = router;
