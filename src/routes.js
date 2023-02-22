@@ -10,5 +10,7 @@ router.get('/',(req,res)=>{
 })
 
 router.get('/getQueue', controller.getQueue);
+router.post('/insertQueue', controller.insertQueue);
+router.delete('/deleteQueue', controller.deleteQueue);
 
 module.exports = router;

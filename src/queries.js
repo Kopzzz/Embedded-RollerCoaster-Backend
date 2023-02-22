@@ -1,5 +1,10 @@
 const getQueue = "SELECT * FROM queue";
+const insertQueue = "INSERT INTO queue (type, wait) VALUES ($1, $2)";
+const deleteQueue = "DELETE FROM queue";
+
 
 module.exports ={
-    getQueue,
+    getQueue, 
+    insertQueue,
+    deleteQueue,
 };
