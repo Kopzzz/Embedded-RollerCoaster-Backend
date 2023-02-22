@@ -1,0 +1,27 @@
+{
+  "name": "embedded-rollercoaster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mqtt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kopzzz/Embedded-RollerCoaster.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kopzzz/Embedded-RollerCoaster/issues"
+  },
+  "homepage": "https://github.com/Kopzzz/Embedded-RollerCoaster#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mqtt": "^4.3.7",
+    "pg": "^8.9.0"
+  }
+}
