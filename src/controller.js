@@ -37,22 +37,22 @@ const deleteQueue = (req,res) => {
 
 const joinQueue = (req,res) => {
     const type = req.body['type'];
-    let Wait = 0;
+    let wait = 0;
 
     pool.query(queries.getQueue, (error, results) => {
         if(error)
             throw error;
         if(type == 'regular'){
-            Wait = results.rows[0].wait;
+            wait = results.rows[0].wait;
         }
         else if(type == 'fast_pass'){
-            Wait = results.rows[1].wait;
+            wait = results.rows[1].wait;
         }
         else{
             res.status(400).send({ error: "Wrong type" });
         }
 
-        pool.query(queries.updateWait, [type, Wait+1], (error, results) => {
+        pool.query(queries.updateWait, [type, wait+1], (error, results) => {
             if(error)
                 throw error;
         });
