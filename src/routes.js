@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const controller = require("./controller");
 
-require("dotenv").config();
 
 router.get('/',(req,res)=>{
     res.send({
-        "message":"Hello Welcome to API Nodejs"
+        "message":"Hello Welcome to Roller Coaster"
     })
 })
+
+router.get('/getQueue', controller.getQueue);
 
 module.exports = router;
