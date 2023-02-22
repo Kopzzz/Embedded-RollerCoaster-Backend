@@ -36,19 +36,55 @@ const deleteQueue = (req,res) => {
 };
 
 const joinQueue = (req,res) => {
-    // pool.query(queries.getQueue, (error, results) => {
-    //     if(error)
-    //         throw error;
-    //     const test = results.rows;
-    // });
-    // console.log(pool.query(queries.getQueue))
-    // const type = req.body;
-    res.status(200);
-    // pool.query(queries.updateQueue, [type, wait], (error, results) => {
-    //     if(error)
-    //         throw error;
-    //     res.status(201).send('Queue updated');
-    // });
+    const type = req.body['type'];
+    let Wait = 0;
+
+    pool.query(queries.getQueue, (error, results) => {
+        if(error)
+            throw error;
+        if(type == 'regular'){
+            Wait = results.rows[0].wait;
+        }
+        else if(type == 'fast_pass'){
+            Wait = results.rows[1].wait;
+        }
+        else{
+            res.status(400).send({ error: "Wrong type" });
+        }
+
+        pool.query(queries.updateWait, [type, Wait+1], (error, results) => {
+            if(error)
+                throw error;
+        });
+    });
+
+    res.status(200).send('Joined queue');
+};
+
+const leaveQueue = (req,res) => {
+    const type = req.body['type'];
+    let Wait = 0;
+
+    pool.query(queries.getQueue, (error, results) => {
+        if(error)
+            throw error;
+        if(type == 'regular'){
+            Wait = results.rows[0].wait;
+        }
+        else if(type == 'fast_pass'){
+            Wait = results.rows[1].wait;
+        }
+        else{
+            res.status(400).send({ error: "Wrong type" });
+        }
+
+        pool.query(queries.updateWait, [type, Wait-1], (error, results) => {
+            if(error)
+                throw error;
+        });
+    });
+
+    res.status(200).send('Leaved queue');
 };
 
 const getTrain = (req,res) => {
@@ -70,6 +106,32 @@ const insertTrain = (req,res) => {
     });
 };
 
+const trainArrived = (req,res) => {
+    pool.query(queries.getTrain, (error, results) => {
+        if(error)
+            throw error;
+
+        const depart = results.rows[0].last_depart
+        const { is_arrived, sit } = { is_arrived: true, sit: 0}
+        pool.query(queries.updateTrain, [depart , is_arrived, sit], (error, results) => {
+            if(error)
+                throw error;
+            res.status(201).send('Train arrived');
+        });
+    });
+};
+
+const trainDeparted = (req,res) => {
+    const now = new Date();
+    console.log(now)
+    const { is_arrived, sit } = { is_arrived: false, sit: 10}
+    pool.query(queries.updateTrain, [now , is_arrived, sit ], (error, results) => {
+        if(error)
+            throw error;
+        res.status(201).send('Train departed');
+    });
+};
+
 const deleteTrain = (req,res) => {
     pool.query(queries.deleteTrain, (error, results) => {
         if(error)
@@ -83,9 +145,13 @@ module.exports ={
     insertQueue,
     updateQueue,
     deleteQueue,
-    joinQueue,
 
     getTrain,
     insertTrain,
     deleteTrain ,
+
+    joinQueue,
+    leaveQueue,
+    trainArrived,
+    trainDeparted,
 };
